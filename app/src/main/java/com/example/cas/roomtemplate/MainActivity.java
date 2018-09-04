@@ -30,11 +30,14 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                User user=new User();
+                synchronized (this) {
+                User user = new User();
                 user.setFirstName("Vikas");
                 user.setLastName(" Pal");
                 user.setAge(21);
-                appDatabase.daoAccess().insertAll(user);
+
+                        appDatabase.daoAccess().insertAll(user);
+                    }
             }
         }).start();
     }
@@ -44,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mName=appDatabase.daoAccess().findByName("Vikas"," Pal").getFirstName();
+                synchronized (this) {
+                        mName = appDatabase.daoAccess().findByName("Vikas", " Pal").getFirstName();
+                    }
             }
         }).start();
     }
